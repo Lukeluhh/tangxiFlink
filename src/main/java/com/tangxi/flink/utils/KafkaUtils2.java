@@ -29,8 +29,16 @@ public class KafkaUtils2 {
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer"); //value 序列化
         KafkaProducer producer = new KafkaProducer<String, String>(props);
 
-        for (int i = 301; i <= 400; i++) {
-            Student student = new Student(i, "tangxi" + i, "password" + i, 18 + i);
+        for (int i = 1; i <= 3; i++) {
+            Student student = new Student(i, "tangxi" + i, "password" + i, 18 );
+            ProducerRecord record = new ProducerRecord<String, String>(topic, null, null, JSON.toJSONString(student));
+            Future send = producer.send(record);
+            Object o = send.get();
+            System.out.println("发送数据: " + JSON.toJSONString(student));
+        }
+
+        for (int i = 5; i <= 10; i++) {
+            Student student = new Student(i, "tangxi" + i, "password" + i, 20 );
             ProducerRecord record = new ProducerRecord<String, String>(topic, null, null, JSON.toJSONString(student));
             Future send = producer.send(record);
             Object o = send.get();
